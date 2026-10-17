@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-17",
+  "version": "v2.5.1-usb-fft-dev",
+  "build": {
+    "success": true,
+    "environment": "m5stack-cores3",
+    "static_ram_bytes": 112880,
+    "flash_bytes": 5254125,
+    "flash_limit_bytes": 6029312,
+    "firmware_sha256": "664762d858a134de5d585aaf3710a128ba4099e453abc479ff91c1437ef6aebc"
+  },
+  "offline_tests": {
+    "spectrum_dsp": "passed",
+    "usb_descriptors_and_controls": "passed",
+    "ui_differential_transfer_and_controls": "passed",
+    "face_captions": "passed",
+    "pet_reaction": "passed",
+    "servo_motion": "passed"
+  },
+  "hardware": {
+    "flashed": false,
+    "usb_enumeration_tested": false,
+    "speaker_listening_tested": false,
+    "continuous_stream_tested": false
+  }
+}

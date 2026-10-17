@@ -1,0 +1,55 @@
+{
+  "version": "v2.4.0",
+  "commit": "5d7a6b576407fb8dc0b900efb3065f618ad622ae",
+  "capture": "Device UI reproduction: tagged drawing functions executed on a PC; synthetic data, no device capture",
+  "display": {
+    "width": 320,
+    "height": 240,
+    "color_depth": 8
+  },
+  "renderer": {
+    "library": "M5GFX",
+    "version": "0.2.30",
+    "backend": "SDL2 2.32.10, offscreen LGFX_Sprite",
+    "japanese_font": "lgfxJapanGothicP_16 / lgfxJapanGothicP_12"
+  },
+  "sample": {
+    "percent": 62,
+    "remaining_min": 42,
+    "eta": "14:42",
+    "layer": 155,
+    "total_layers": 250,
+    "wifi_ssid": "StackChan-Demo",
+    "printer_ip": "192.0.2.25"
+  },
+  "source_sha256": {
+    "src/PrinterState.h": "fb974982216e197e669ec1e351c134e2e62062d89f2559d5cd4700bfdbf91e51",
+    "src/PrinterState.cpp": "98c91db9d5eff13d9e7f08eb9ea13e97c1d5cd031874bc780c7ba93c44a9b047",
+    "src/PrinterScreen.h": "0f7f37b6ae1045a5c5e53484549610ccb40b279fc36303ea7fa331a888ea94ce",
+    "src/PrinterScreen.cpp": "7f2e58bc1a8ca01aeb74f5a9eebcfcee0c25de9bdd2e0db7ddc0c6484cf21e39",
+    "src/main.cpp": "b66e413039cb5e2222546d4de7bf76d3697b520f304cd2cd8e57c801f5afc272",
+    "src/SetupUi.h": "a9647c7ff668466e6400ef499770d7ff80dba009e567651bac0331a876ebe668",
+    "src/TouchKeyboard.h": "d6e3c8d0e2ce8868eb7f8991ff77c84844d4b8c4468391f1af3a91f714e2fabe",
+    "src/TouchKeyboard.cpp": "3d2e99694d51184686c8b820decb3f2ad829716ddec9f1e4548198d58e73e941"
+  },
+  "images": [
+    {
+      "file": "device-printer.png",
+      "width": 320,
+      "height": 240,
+      "sha256": "51471e5f3a5b55746190c7a3ceb303f4386ddf5dc9608d25c73c9b1e6e27d6bf"
+    },
+    {
+      "file": "device-menu.png",
+      "width": 320,
+      "height": 240,
+      "sha256": "8a5f09b72056e3a008a977510f4fa164632accd61216bea64ff3ba126a9c2b5a"
+    },
+    {
+      "file": "device-keyboard.png",
+      "width": 320,
+      "height": 240,
+      "sha256": "ba60099afed0ca7f4f112e2adfe6b0954e1039f49a76ee75c590941ca7adf1ed"
+    }
+  ]
+}

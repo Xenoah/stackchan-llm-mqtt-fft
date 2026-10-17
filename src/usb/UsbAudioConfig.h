@@ -1,0 +1,21 @@
+#pragma once
+
+// Add the UAC2 class through TinyUSB's application-driver API. Arduino keeps
+// ownership of the USB peripheral and CDC; no second USB stack is started.
+#define STACKCHAN_UAC_TASK_FEEDBACK 1
+#define CFG_TUD_AUDIO 1
+#define CFG_TUD_AUDIO_ENABLE_EP_OUT 1
+#define CFG_TUD_AUDIO_ENABLE_EP_IN 0
+#define CFG_TUD_AUDIO_ENABLE_FEEDBACK_EP 1
+// Windows UAC2 requires 16.16 feedback even at full speed.
+#define CFG_TUD_AUDIO_ENABLE_FEEDBACK_FORMAT_CORRECTION 0
+#define CFG_TUD_AUDIO_FUNC_1_N_AS_INT 1
+#define CFG_TUD_AUDIO_FUNC_1_CTRL_BUF_SZ 64
+#define CFG_TUD_AUDIO_FUNC_1_N_CHANNELS_RX 2
+#define CFG_TUD_AUDIO_FUNC_1_N_FORMATS 1
+#define CFG_TUD_AUDIO_FUNC_1_MAX_SAMPLE_RATE 48000
+#define CFG_TUD_AUDIO_FUNC_1_FORMAT_1_N_BYTES_PER_SAMPLE_RX 2
+#define CFG_TUD_AUDIO_FUNC_1_FORMAT_1_RESOLUTION_RX 16
+#define CFG_TUD_AUDIO_FUNC_1_EP_OUT_SZ_MAX 196
+#define CFG_TUD_AUDIO_FUNC_1_EP_OUT_SW_BUF_SZ 784
+#define CFG_TUD_AUDIO_FUNC_1_DESC_LEN (8+9+9+8+17+18+12+9+9+16+6+7+8+7)

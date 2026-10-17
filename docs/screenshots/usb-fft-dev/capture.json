@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-17",
+  "capture": "PC rendering of actual firmware functions using synthetic audio; no hardware access",
+  "source_sha256": {
+    "src/main.cpp": "b31340fc87c1a2346583a10c5b7dd6df261e134b873167191fae3d7ef1b4b3cb",
+    "src/UsbSpectrum.cpp": "7a2295752c22f37ad3e6ec3611a86b58a5bdaf1c80538bd9ef88d0ccf274e0af",
+    "src/FaceHud.cpp": "cf05af199814d11150927ce7debd387b5cab789082e07a1570e8217b0565b1d9"
+  },
+  "images": [
+    "menu.png",
+    "home-fft.png",
+    "home-caption.png",
+    "fft-idle.png",
+    "fft-bars.png",
+    "fft-wave.png"
+  ]
+}

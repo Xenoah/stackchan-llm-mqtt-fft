@@ -1,0 +1,105 @@
+{
+  "version": "v2.2.0",
+  "commit": "2b374cb6eb52621ef6346e48729f40c48631b0ff",
+  "source": "src/WebPages.h",
+  "source_sha256": "8ff411a7738a36962674ab72db462592719900f79ca1ccf0a719abca6981c8cd",
+  "capture": "Tagged Web UI rendered by Chrome with synthetic sample data; animations disabled; no live printer",
+  "sample": {
+    "enabled": true,
+    "voice": true,
+    "mode": "mqtt",
+    "auto_mode": true,
+    "link": "online",
+    "synced": true,
+    "age": 1,
+    "phase": "RUNNING",
+    "phase_ja": "印刷中",
+    "job": "StackChan スタンド",
+    "percent": 62,
+    "remaining_min": 42,
+    "eta": "14:42",
+    "layer": 155,
+    "total_layers": 250,
+    "stage": 0,
+    "stage_ja": "印刷中",
+    "speed": "スタンダード",
+    "nozzle": 220,
+    "nozzle_target": 220,
+    "bed": 55,
+    "bed_target": 55,
+    "chamber": 37,
+    "fans": {
+      "part": 80,
+      "aux": 0,
+      "chamber": 60
+    },
+    "light": 1,
+    "hms": [],
+    "ams": {
+      "now": 0,
+      "units": [
+        {
+          "id": 0,
+          "humidity": 1,
+          "trays": [
+            {
+              "present": true,
+              "type": "PLA",
+              "color": "#60a5fa",
+              "remain": 68
+            },
+            {
+              "present": true,
+              "type": "PETG",
+              "color": "#f8fafc",
+              "remain": 82
+            },
+            {
+              "present": true,
+              "type": "PLA",
+              "color": "#f472b6",
+              "remain": 45
+            },
+            {
+              "present": false,
+              "type": "",
+              "color": "#000000",
+              "remain": -1
+            }
+          ]
+        }
+      ]
+    },
+    "log": [
+      {
+        "text": "いま62%、155層目。全部で250層だよ。",
+        "mood": "neutral",
+        "ago": 5
+      },
+      {
+        "text": "半分まで来たよ！順調にできているね。",
+        "mood": "happy",
+        "ago": 120
+      },
+      {
+        "text": "印刷スタート！完成するのが楽しみだね。",
+        "mood": "happy",
+        "ago": 3600
+      }
+    ]
+  },
+  "images": [
+    {
+      "file": "web-desktop.png",
+      "width": 1040,
+      "height": 1141,
+      "sha256": "9555700994abe49d388f43b346845d5dd827220d9c77df1f8f9a3ce2d66b4793"
+    },
+    {
+      "file": "web-mobile.png",
+      "width": 430,
+      "height": 1457,
+      "sha256": "429726039fa671ab70250f15aa11105004486b3409c47d34db69d02db82db0d8"
+    }
+  ]
+}

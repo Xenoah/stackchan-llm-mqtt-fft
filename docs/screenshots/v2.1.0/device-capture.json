@@ -1,0 +1,46 @@
+{
+  "version": "v2.1.0",
+  "commit": "529883e026d8ce384526eb779864e87e45d02236",
+  "capture": "Device UI reproduction: tagged drawing functions executed on a PC; synthetic data, no device capture",
+  "display": {
+    "width": 320,
+    "height": 240,
+    "color_depth": 16
+  },
+  "renderer": {
+    "library": "M5GFX",
+    "version": "0.2.30",
+    "backend": "SDL2 2.32.10, offscreen LGFX_Sprite",
+    "japanese_font": "lgfxJapanGothicP_16 / lgfxJapanGothicP_12"
+  },
+  "sample": {
+    "percent": 62,
+    "remaining_min": 42,
+    "eta": "14:42",
+    "layer": 155,
+    "total_layers": 250,
+    "wifi_ssid": "StackChan-Demo",
+    "printer_ip": "192.0.2.25"
+  },
+  "source_sha256": {
+    "src/PrinterState.h": "fb974982216e197e669ec1e351c134e2e62062d89f2559d5cd4700bfdbf91e51",
+    "src/PrinterState.cpp": "98c91db9d5eff13d9e7f08eb9ea13e97c1d5cd031874bc780c7ba93c44a9b047",
+    "src/PrinterScreen.h": "015c00c27b52e004c9d5057a25f3a150b2f40b3241e091c1aee54a4d51f323bc",
+    "src/PrinterScreen.cpp": "cc8bdb3ac903959558abd07ee47c2a38b64fd0d59dbdfe25f51a369cb23485c1",
+    "src/main.cpp": "0cd5ffa2e30c29793535083339ecca077d1432e2f4bd5ea21c19b1afe82124ac"
+  },
+  "images": [
+    {
+      "file": "device-printer.png",
+      "width": 320,
+      "height": 240,
+      "sha256": "d4495c9a462e2cf37e62cb65dcd954063979ddfef1f808997978adfcac3d84d0"
+    },
+    {
+      "file": "device-menu.png",
+      "width": 320,
+      "height": 240,
+      "sha256": "443a2faf26910ce2e1e1ed217607dcbac95db108d1417bb964fe2c01ff209300"
+    }
+  ]
+}

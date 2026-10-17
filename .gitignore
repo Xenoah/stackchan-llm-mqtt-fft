@@ -1,0 +1,8 @@
+.pio
+.release/
+.vscode/
+docs/GITHUB_WORKFLOW.md
+__pycache__/
+*.pyc
+# VOICEVOX で生成する内蔵ボイスパック（tools/make_voice_pack.py で作る）
+data/voice.pak
