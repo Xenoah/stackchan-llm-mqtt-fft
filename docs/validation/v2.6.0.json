@@ -89,5 +89,14 @@
     "physical LCD inspection",
     "long-duration streaming and audio dropouts",
     "hardware FFT frame rate"
-  ]
+  ],
+  "validation_correction": {
+    "date": "2026-10-17",
+    "superseded_by": "v2.6.1",
+    "device_pcm_reception_was_not_verified": true,
+    "reproduced_received_bytes": 0,
+    "reproduced_speaker_bytes": 0,
+    "reproduced_fft_analyses": 0,
+    "note": "Windows waveOut completion and speech while its endpoint was open did not prove USB PCM reception. The old DCD failed to receive ISO audio. See v2.6.1.json for corrected end-to-end device tests."
+  }
 }

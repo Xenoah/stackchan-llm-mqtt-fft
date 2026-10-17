@@ -1,7 +1,7 @@
 {
   "date": "2026-10-17",
   "version": "v2.6.1",
-  "tested_firmware": "v2.6.1-dev (same USB fix, before diagnostic trace removal/version rename)",
+  "tested_firmware": "v2.6.1 (published release asset, flashed and re-tested)",
   "regression": {
     "before_version": "v2.6.0 plus counters",
     "received_bytes": 0,
@@ -71,5 +71,100 @@
     "ram": 113488,
     "flash": 5259613
   },
-  "hardware_listening_and_lcd_visual_confirmation": "pending user response"
+  "hardware_listening_and_lcd_visual_confirmation": {
+    "confirmed_by": "user",
+    "result": "音もグラフも動いている",
+    "scope": "Audible test sound and a moving graph on the physical device; separate listening-quality and each-screen visual assessment were not requested."
+  },
+  "source_commit": "4d7084dc910a8c003e2ca4b92fcd326cfaa2f594",
+  "release": "https://github.com/Xenoah/stackchan-llm-mqtt-fft/releases/tag/v2.6.1",
+  "firmware_sha256": "b82357b72648b6d35dd254688a430eae70964d253afe89d188f35809ba1a90b4",
+  "published_before_flashing": true,
+  "release_asset_hashes_verified": 7,
+  "flash": {
+    "port": "COM4",
+    "address": "0x10000",
+    "bytes": 5259984,
+    "hash_verified": true,
+    "nvs_and_littlefs_not_written": true
+  },
+  "soak_tone_hz": 0,
+  "malformed_packets": 0,
+  "final_received_bytes": 16121968,
+  "final_speaker_bytes": 16121968,
+  "speech_during_received_usb_stream": {
+    "passed": true,
+    "speaking_states": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "received_bytes_delta": 1867676,
+    "speaker_bytes_delta": 1864784
+  },
+  "network": {
+    "wifi_connected": true,
+    "mqtt_link": "online",
+    "mqtt_synced": true
+  },
+  "serial_monitor": {
+    "started": "2026-10-17T22:14:11+09:00",
+    "ended": "2026-10-17T22:16:11+09:00",
+    "elapsed_s": 120.14,
+    "disconnects": 0,
+    "fault_lines": 0,
+    "boot_lines": 0,
+    "heap_samples": 8,
+    "metrics": {
+      "free_heap": {
+        "first": 96788,
+        "min": 96788,
+        "max": 98184,
+        "last": 98160
+      },
+      "min_free_heap": {
+        "first": 91676,
+        "min": 91676,
+        "max": 91676,
+        "last": 91676
+      },
+      "max_block": {
+        "first": 81908,
+        "min": 81908,
+        "max": 81908,
+        "last": 81908
+      },
+      "free_psram": {
+        "first": 8114955,
+        "min": 8114955,
+        "max": 8114955,
+        "last": 8114955
+      },
+      "face_stack_free": {
+        "first": 5868,
+        "min": 5868,
+        "max": 5868,
+        "last": 5868
+      },
+      "loop_stack_free": {
+        "first": 4920,
+        "min": 4920,
+        "max": 4920,
+        "last": 4920
+      },
+      "mqtt_stack_free": {
+        "first": 9152,
+        "min": 9152,
+        "max": 9152,
+        "last": 9152
+      }
+    }
+  }
 }
