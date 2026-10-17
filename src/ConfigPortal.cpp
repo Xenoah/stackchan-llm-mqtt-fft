@@ -2,6 +2,9 @@
 
 #include "Version.h"
 #include "WebPages.h"
+#include "UsbSpectrum.h"
+#include "usb/UsbAudio.h"
+#include <ArduinoJson.h>
 
 namespace {
 
@@ -477,6 +480,54 @@ void ConfigPortal::registerRoutes() {
   // GET /api/status → デバイス状態をJSONで返す（Gateway の疎通確認用）
   server_.on("/api/status", HTTP_GET, [this]() {
     server_.send(200, "application/json", apiStatusJson());
+  });
+
+  // Read-only end-to-end USB diagnostics. Host playback completion alone does
+  // not prove PCM reached the speaker or the FFT on this device.
+  server_.on("/api/usb-spectrum", HTTP_GET, [this]() {
+    const auto usb = usb_audio::diagnostics();
+    const auto fft = usb_spectrum::diagnostics();
+    JsonDocument doc;
+    doc["version"] = kAppVersion;
+    doc["ready"] = usb.ready && fft.ready;
+    doc["mounted"] = usb.mounted;
+    doc["active"] = usb.active;
+    doc["alternate"] = usb.alternate;
+    doc["opens"] = usb.opens;
+    doc["controls"] = usb.controls;
+    doc["control_failures"] = usb.controlFailures;
+    doc["failed_request_0"] = usb.failedRequest[0];
+    doc["failed_request_1"] = usb.failedRequest[1];
+    doc["failed_stage"] = usb.failedStage;
+    doc["out_endpoint"] = usb.outEndpoint;
+    doc["feedback_endpoint"] = usb.feedbackEndpoint;
+    doc["transfers"] = usb.transfers;
+    doc["feedback_transfers"] = usb.feedbackTransfers;
+    doc["callbacks"] = usb.callbacks;
+    doc["received_bytes"] = usb.receivedBytes;
+    doc["speaker_bytes"] = usb.speakerBytes;
+    doc["dropped_bytes"] = usb.droppedBytes;
+    doc["queued_bytes"] = usb.queuedBytes;
+    doc["malformed_packets"] = usb.malformedPackets;
+    doc["last_packet_bytes"] = usb.lastPacketBytes;
+    doc["last_peak"] = usb.lastPeak;
+    doc["host_mute"] = usb.hostMuted;
+    doc["local_mute"] = usb.localMuted;
+    doc["volume_db"] = usb.volumeDb / 256.f;
+    doc["frames"] = fft.receivedFrames;
+    doc["analyses"] = fft.analyses;
+    doc["draws"] = fft.draws;
+    doc["screen_open"] = fft.open;
+    doc["hold"] = fft.hold;
+    doc["waveform"] = fft.waveform;
+    doc["peak_hz"] = fft.peakHz;
+    doc["peak_dbfs"] = fft.peakDb;
+    doc["left_dbfs"] = fft.leftDb;
+    doc["right_dbfs"] = fft.rightDb;
+    String body;
+    serializeJson(doc, body);
+    server_.sendHeader("Cache-Control", "no-store");
+    server_.send(200, "application/json", body);
   });
 
   // --- プリンタ ダッシュボード API ---

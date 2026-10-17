@@ -679,3 +679,17 @@ CDCログ取得にはDTR=RTS=Trueが必要。旧monitor_serial.pyのFalse設定�
 例外・再起動行・切断0。公開用の検証記録は `docs/validation/v2.6.0.json`。実LCD・音質の目視/聴感評価は未確認。
 同時再生の最初のホスト検証は、30秒ストリームに対する待ち時間15秒が短くハーネスがタイムアウトした。
 USBの30秒再生自体は完了。待ち時間を直した15秒ストリームの再試験で、発話中→完了とUSBの継続・終了をassertして合格。
+
+## 17. USB受信停止の修正 v2.6.1（2026-10-17）
+
+ユーザーから「音が流れずアナライザーも動かなくなってる」と報告。v2.6.0のホスト送信完了確認は実機の受信確認として不十分だった。
+元の `C:/GitHub/M5Stack_USB_Spectrum` は正しいv1.1.0タグ。DWC2バックエンドと実機の受信数・FFT周波数照合を使っていた。
+統合版にread-only `/api/usb-spectrum` を追加し、受信0・speaker0・FFT0、SET_INTERFACE(3,1)失敗を再現。
+旧Arduino DCDは196バイトのISO転送に不適切（OUT転送長が7ビットに制限）で、dcd_edpt_closeも未実装。
+TinyUSB 0.16.0のDWC2ソース3ファイルをvendoringし、旧DCDオブジェクトがリンクされないことをmapで確認。
+CDCのEP 5は旧DCDの特殊扱いなので、configuration descriptorのlinker wrapでCDCをOUT2/IN2/notifyIN3へ移す。
+音声はduplex EP1を確保、feedbackは元の版と同じ1ms。設定・NVS・音声パックは変更しない。
+実機440/1000/4000Hz・逆位相・無音・60秒連続入力はPASS、破棄0・control failures0。`.pio/usb-debug/` は未公開の診断データ。
+最初の440Hz試験は起動挨拶によるHTTP遅延で5秒のテスト音が先に終わったため、テスト音を12秒のバッファに延ばして再検証。
+最終識別文字列v2.6.1、RAM113488B、Flash5259613B。検出位置を記録する一時traceだけ削除し、公開後に最終版を再書込み・再検証する。
+通常COM8から1200baudで開くとブートローダーCOM4へ切替（シリアル例外は切断に伴うもの）。以後esptoolはCOM4でアプリ0x10000のみ更新。

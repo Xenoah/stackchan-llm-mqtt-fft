@@ -25,11 +25,19 @@ std::atomic<bool> ready{false}, muted{false}, hostMuted{false}, speech{false};
 std::atomic<int16_t> volumeDb{0};
 std::atomic<uint32_t> dropped{0};
 std::atomic<uint32_t> lastPacketMs{0};
+std::atomic<uint32_t> opens{0}, controls{0}, controlFailures{0};
+std::atomic<uint32_t> transfers{0}, feedbackTransfers{0}, callbacks{0};
+std::atomic<uint32_t> receivedBytes{0}, speakerBytes{0}, malformedPackets{0};
+std::atomic<uint32_t> lastPacketBytes{0}, lastPeak{0};
+std::atomic<uint8_t> alternate{0};
+std::atomic<uint32_t> failedRequest[2] = {}, failedStage{0};
+uint8_t outEndpoint=0, feedbackEndpoint=0;
 uint8_t streamInterface = 0;
 
 uint16_t loadDescriptor(uint8_t* dst, uint8_t* itf) {
-  const uint8_t out = tinyusb_get_free_out_endpoint();
-  const uint8_t feedback = tinyusb_get_free_in_endpoint();
+  const uint8_t out = tinyusb_get_free_duplex_endpoint();
+  const uint8_t feedback = out;
+  outEndpoint=out; feedbackEndpoint=uint8_t(0x80 | feedback);
   if (!out || !feedback) return 0;
   const uint8_t name = tinyusb_add_string_descriptor("StackChan USB Spectrum");
   streamInterface = *itf + 1;
@@ -59,7 +67,7 @@ uint16_t loadDescriptor(uint8_t* dst, uint8_t* itf) {
     TUD_AUDIO_DESC_CS_AS_ISO_EP(AUDIO_CS_AS_ISO_DATA_EP_ATT_NON_MAX_PACKETS_OK,
       0, AUDIO_CS_AS_ISO_DATA_EP_LOCK_DELAY_UNIT_UNDEFINED, 0),
     TUD_AUDIO_DESC_STD_AS_ISO_EP(uint8_t(0x80 | feedback),
-      TUSB_XFER_ISOCHRONOUS | TUSB_ISO_EP_ATT_NO_SYNC | TUSB_ISO_EP_ATT_EXPLICIT_FB, 4, 4),
+      TUSB_XFER_ISOCHRONOUS | TUSB_ISO_EP_ATT_NO_SYNC | TUSB_ISO_EP_ATT_EXPLICIT_FB, 4, 1),
   };
   static_assert(sizeof(descriptor) == CFG_TUD_AUDIO_FUNC_1_DESC_LEN, "UAC descriptor length");
   memcpy(dst, descriptor, sizeof(descriptor));
@@ -100,6 +108,8 @@ void speakerTask(void*) {
         silent ? 0 : uint8_t(90.f * std::sqrt(gain) * (speech.load() ? .5f : 1.f)));
     if (!M5.Speaker.playRaw(blocks[index], bytes / 2, 48000, true, 1, kSpeakerChannel, false)) {
       dropped.fetch_add(bytes);
+    } else {
+      speakerBytes.fetch_add(bytes);
     }
     index = (index + 1) % 3;
   }
@@ -128,25 +138,63 @@ void setLocalMute(bool value) { muted.store(value); }
 bool localMute() { return muted.load(); }
 void setSpeechActive(bool value) { speech.store(value); }
 uint32_t droppedBytes() { return dropped.load(); }
+Diagnostics diagnostics() {
+  return {ready.load(), mounted(), active(), hostMuted.load(), muted.load(),
+    alternate.load(), volumeDb.load(), opens.load(), controls.load(),
+    controlFailures.load(), transfers.load(), feedbackTransfers.load(), callbacks.load(),
+    receivedBytes.load(), speakerBytes.load(), dropped.load(),
+    stream ? uint32_t(xStreamBufferBytesAvailable(stream)) : 0,
+    malformedPackets.load(), lastPacketBytes.load(), lastPeak.load(),
+    {failedRequest[0].load(), failedRequest[1].load()}, failedStage.load(),
+    outEndpoint, feedbackEndpoint};
+}
 }  // namespace usb_audio
 
 extern "C" {
+static uint16_t openAudio(uint8_t rhport, tusb_desc_interface_t const* descriptor, uint16_t length) {
+  const uint16_t result = audiod_open(rhport, descriptor, length);
+  if (result) opens.fetch_add(1);
+  return result;
+}
+static bool controlAudio(uint8_t rhport, uint8_t stage, tusb_control_request_t const* request) {
+  controls.fetch_add(1);
+  const bool result = audiod_control_xfer_cb(rhport, stage, request);
+  if (!result) {
+    controlFailures.fetch_add(1);
+    uint32_t words[2]; memcpy(words, request, sizeof(words));
+    failedRequest[0].store(words[0]); failedRequest[1].store(words[1]);
+    failedStage.store(stage);
+  }
+  return result;
+}
+static bool transferAudio(uint8_t rhport, uint8_t endpoint, xfer_result_t result, uint32_t bytes) {
+  if (endpoint & 0x80) feedbackTransfers.fetch_add(1);
+  else transfers.fetch_add(1);
+  return audiod_xfer_cb(rhport, endpoint, result, bytes);
+}
 usbd_class_driver_t const* usbd_app_driver_get_cb(uint8_t* count) {
   static const usbd_class_driver_t driver = {
 #if CFG_TUSB_DEBUG >= CFG_TUD_LOG_LEVEL
     "StackChan UAC2",
 #endif
-    audiod_init, audiod_reset, audiod_open, audiod_control_xfer_cb,
-    audiod_xfer_cb, audiod_sof_isr
+    audiod_init, audiod_reset, openAudio, controlAudio,
+    transferAudio, audiod_sof_isr
   };
   *count = 1;
   return &driver;
 }
 
 bool tud_audio_rx_done_post_read_cb(uint8_t, uint16_t, uint8_t, uint8_t, uint8_t) {
+  callbacks.fetch_add(1);
   alignas(4) int16_t packet[CFG_TUD_AUDIO_FUNC_1_EP_OUT_SZ_MAX / 2];
   const uint16_t bytes = tud_audio_read(packet, sizeof(packet));
-  if (!ready.load() || !bytes || bytes % 4) return true;
+  lastPacketBytes.store(bytes);
+  if (!ready.load() || !bytes) return true;
+  if (bytes % 4) { malformedPackets.fetch_add(1); return true; }
+  receivedBytes.fetch_add(bytes);
+  uint32_t peak = 0;
+  for (unsigned i = 0; i < bytes / 2; ++i) peak = std::max(peak, uint32_t(std::abs(int(packet[i]))));
+  lastPeak.store(peak);
   lastPacketMs.store(uint32_t(esp_timer_get_time() / 1000));
   receiver.load()(packet, bytes / 4);
   // Never enqueue partial stereo frames on overflow.
@@ -165,6 +213,7 @@ bool tud_audio_rx_done_post_read_cb(uint8_t, uint16_t, uint8_t, uint8_t, uint8_t
 
 bool tud_audio_set_itf_cb(uint8_t, tusb_control_request_t const* request) {
   if (uint8_t(request->wIndex) == streamInterface) {
+    alternate.store(uint8_t(request->wValue));
     lastPacketMs.store(0);
     if (request->wValue == 1) tud_audio_fb_set(48u << 16);
   }

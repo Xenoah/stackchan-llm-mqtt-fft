@@ -312,6 +312,15 @@ void close() {
 bool isOpen() { return screenOpen; }
 bool isReady() { return ready; }
 bool isActive() { return ready && active; }
+Diagnostics diagnostics() {
+    uint32_t frames;
+    portENTER_CRITICAL(&audioLock);
+    frames=receivedFrames;
+    portEXIT_CRITICAL(&audioLock);
+    return {ready,active,screenOpen,hold,waveformMode,frames,analysisCount,frameNumber,
+        spectrum?spectrum->peakHz:0, spectrum?spectrum->peakDb:-120,
+        spectrum?spectrum->rms[0]:-120, spectrum?spectrum->rms[1]:-120};
+}
 void tap(int16_t x,int16_t y) {
     if(!screenOpen || y<214) return;
     if(x<109) waveformMode=!waveformMode;

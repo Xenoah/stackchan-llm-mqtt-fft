@@ -224,3 +224,8 @@ VOICEVOXおよびキャラクター音声は本リポジトリへ同梱してい
   MIT License。各ソース内の著作権表示と [tinyusb.txt](docs/licenses/tinyusb.txt) を保持。
   ローカル設定ヘッダーの読み込みと、Arduino 2.0.17で未実装のSOF制御を使わないための条件分岐を追加。
   音声クロックのフィードバックはUSBタスクで更新する。
+
+- v2.6.1: 同じTinyUSB 0.16.0の `portable/synopsys/dwc2/` から `dcd_dwc2.c`、
+  `dwc2_esp32.h`、`dwc2_type.h` を `src/usb/tinyusb/dwc2/` に収録。MITの著作権表示を保持。
+  Arduino同梱の旧DCDに代わり、等時転送とエンドポイントの停止・再開を担当。
+- 実機検証 `tools/spectrum_test/device.py` のWindows waveOut処理は、上記cores3-usb-spectrumの同名処理を移植（MIT）。

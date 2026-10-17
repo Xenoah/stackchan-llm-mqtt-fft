@@ -1,8 +1,8 @@
-# USBオーディオ・FFT v2.6.0
+# USBオーディオ・FFT v2.6.1
 
 `stackchan-mqtt v2.5.1` に `cores3-usb-spectrum v1.1.0` の解析・画面を統合したファームウェアです。
-ファームウェア識別文字列は `v2.6.0`。初回プレリリースです。
-公開後の実機検証結果は[リリース説明](https://github.com/Xenoah/stackchan-llm-mqtt-fft/releases/tag/v2.6.0)へ追記します。
+ファームウェア識別文字列は `v2.6.1`。v2.6.0のUSB受信停止を修正したプレリリースです。
+[リリース説明](https://github.com/Xenoah/stackchan-llm-mqtt-fft/releases/tag/v2.6.1)。
 
 ## 追加した操作
 
@@ -35,6 +35,7 @@ USBの受信・再生は専用タスク経由で、FFTやLCD描画から独立�
 - 4096点Hann窓、25 Hz〜20 kHzの32対数バンド、左右RMS、ピーク周波数、ピーク保持、クリップ表示、左チャンネル波形を維持。
   左右のパワーを合成するため、逆位相の入力でも解析結果は消えません。
 - Arduino 2.0.17 / PlatformIO espressif32 6.12.0を維持。USB Audioは同梱TinyUSB 0.16のアプリケーションクラスとして追加し、CDC診断ポートと共存。
+- v2.6.1ではUSB低レベル処理をTinyUSB 0.16.0のDWC2へ置換。音声OUT/IN=1、CDCデータOUT/IN=2、通知IN=3として物理FIFOの範囲内に収めます。
 - USBはOTGモードへ変更。試作用VID/PIDは `303A:8001`。通常動作時のCOM番号は元のファームウェアと変わる場合があります。
 - FFTは移植元のポータブル計算実装を使用。大きな作業バッファはPSRAMに置き、更新を最大約30回/秒に制限して会話・Wi-Fi・顔描画と共存させています。
   元の単機能ファームウェアの134 FPSという実測値は、この統合版の性能を示すものではありません。
@@ -77,3 +78,22 @@ USB制御テストでは、インストール済みArduinoフレームワーク�
 
 音質の聴感評価・LCDの目視・長時間の音切れ・実機FFTのFPSは未確認です。
 `screenshots/usb-fft-dev/verification.json` は開発版をPC内で検証した時点の記録です。
+
+## v2.6.1での実機再検証
+
+v2.6.0の確認はWindows側の送信完了までで、実機がPCMを受け取ったことを証明できていませんでした。
+不具合を再現すると受信・再生キュー・FFT解析はすべて0で、SET_INTERFACE開始要求が失敗していました。
+Arduino同梱DCDには等時転送のパケット処理と個別エンドポイントを閉じる処理が不足していたため、
+移植元と同じDWC2方式をArduinoのTinyUSB 0.16.0 APIに合わせて導入しました。
+
+```powershell
+python tools/spectrum_test/device.py --url http://本体のIP --soak 60
+```
+
+この検証は実機のモードを一時的にホームへ切り替え、PCからテスト音を送ります。最後に元のモードへ戻します。
+440 Hz / 1 kHz / 4 kHz、逆位相、無音、停止・再開を確認。60秒の追加試験は無音PCMを連続送信します。
+受信バイト数・スピーカーキューへの転送・解析回数の増加と、実機FFTの検出周波数を照合します。
+診断APIは `GET /api/usb-spectrum`。Windows側だけで再生が完了しても合格にはしません。
+
+修正確認ビルドは全項目に合格し、60秒の連続入力でも破棄バイト・制御エラーは0でした。
+検証記録は [validation/v2.6.1.json](validation/v2.6.1.json)。音質の聴感評価や実LCDの目視は機械的な検証とは区別します。

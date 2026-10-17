@@ -1,0 +1,75 @@
+{
+  "date": "2026-10-17",
+  "version": "v2.6.1",
+  "tested_firmware": "v2.6.1-dev (same USB fix, before diagnostic trace removal/version rename)",
+  "regression": {
+    "before_version": "v2.6.0 plus counters",
+    "received_bytes": 0,
+    "speaker_bytes": 0,
+    "analyses": 0,
+    "failed_request": "SET_INTERFACE interface 3 alternate 1"
+  },
+  "device_tests": [
+    {
+      "tone_hz": 440,
+      "opposite_phase": false,
+      "passed": true,
+      "measured_hz": [
+        439.9196,
+        439.9196,
+        439.9196
+      ]
+    },
+    {
+      "tone_hz": 1000,
+      "opposite_phase": false,
+      "passed": true,
+      "measured_hz": [
+        1000.181,
+        1000.181,
+        1000.181
+      ]
+    },
+    {
+      "tone_hz": 4000,
+      "opposite_phase": false,
+      "passed": true,
+      "measured_hz": [
+        4000.181,
+        4000.181,
+        4000.181
+      ]
+    },
+    {
+      "tone_hz": 1000,
+      "opposite_phase": true,
+      "passed": true,
+      "measured_hz": [
+        1000.181,
+        1000.181,
+        1000.181
+      ]
+    },
+    {
+      "tone_hz": 0,
+      "opposite_phase": false,
+      "passed": true,
+      "measured_hz": [
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "soak_seconds": 60,
+  "soak_passed": true,
+  "dropped_bytes": 0,
+  "control_failures": 0,
+  "idle_passed": true,
+  "offline_tests": "DSP, UAC2/CDC descriptor/controls, face/menu/FFT UI passed",
+  "build": {
+    "ram": 113488,
+    "flash": 5259613
+  },
+  "hardware_listening_and_lcd_visual_confirmation": "pending user response"
+}

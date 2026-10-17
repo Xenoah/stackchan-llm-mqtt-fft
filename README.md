@@ -4,11 +4,13 @@
 USB音声を本体スピーカーで再生し、**ホームの顔に32バンドのグラフ**を表示します。
 メニューの **FFT** から専用画面を開けます。[使い方・構成・検証範囲](docs/USB_SPECTRUM.md)。
 
-**現在のリリース: [v2.6.0](https://github.com/Xenoah/stackchan-llm-mqtt-fft/releases/tag/v2.6.0)（プレリリース）**
+**現在のリリース: [v2.6.1](https://github.com/Xenoah/stackchan-llm-mqtt-fft/releases/tag/v2.6.1)（プレリリース）**
 
 | ホーム＋字幕 | FFT画面 | メニュー |
 | --- | --- | --- |
 | ![ホーム](docs/screenshots/usb-fft-dev/home-caption.png) | ![FFT](docs/screenshots/usb-fft-dev/fft-bars.png) | ![メニュー](docs/screenshots/usb-fft-dev/menu.png) |
+
+v2.6.0でUSB音声が受信されずグラフが止まる不具合を修正しました。更新はv2.6.1を使用してください。
 
 上の画像は本体の描画コードをPCで実行した再現画像です。実機写真ではありません。
 
