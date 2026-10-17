@@ -1,0 +1,93 @@
+{
+  "date": "2026-10-17",
+  "version": "v2.6.0",
+  "source_commit": "ace30a5",
+  "release": "https://github.com/Xenoah/stackchan-llm-mqtt-fft/releases/tag/v2.6.0",
+  "firmware_sha256": "db7a2cce740aa886db8b76fc405f6180ff99254b5ee333caba99cbba2dd9906e",
+  "published_before_flashing": true,
+  "release_asset_hashes_verified": 7,
+  "flash": {
+    "port": "COM4",
+    "address": "0x10000",
+    "bytes": 5254480,
+    "hash_verified": true,
+    "bootloader_partitions_boot_app0_unchanged": true,
+    "nvs_and_littlefs_not_written": true
+  },
+  "usb": {
+    "vid_pid": "303A:8001",
+    "cdc_port": "COM8",
+    "windows_audio_device": "StackChan USB Spectrum",
+    "pnp_status": "OK",
+    "sample_rate": 48000,
+    "bits": 16,
+    "channels": 2,
+    "test_tone_seconds": 5,
+    "silent_stream_seconds": 30,
+    "speech_completed_during_usb_stream": true
+  },
+  "network": {
+    "wifi_connected": true,
+    "mqtt_link": "online",
+    "mqtt_synced": true
+  },
+  "serial_monitor": {
+    "started": "2026-10-17T19:11:14+09:00",
+    "ended": "2026-10-17T19:12:14+09:00",
+    "elapsed_s": 60.16,
+    "disconnects": 0,
+    "fault_lines": 0,
+    "boot_lines": 0,
+    "heap_samples": 4,
+    "metrics": {
+      "free_heap": {
+        "first": 101836,
+        "min": 100404,
+        "max": 101836,
+        "last": 100624
+      },
+      "min_free_heap": {
+        "first": 93240,
+        "min": 93240,
+        "max": 93240,
+        "last": 93240
+      },
+      "max_block": {
+        "first": 86004,
+        "min": 86004,
+        "max": 86004,
+        "last": 86004
+      },
+      "free_psram": {
+        "first": 8080671,
+        "min": 8080671,
+        "max": 8080671,
+        "last": 8080671
+      },
+      "face_stack_free": {
+        "first": 5868,
+        "min": 5868,
+        "max": 5868,
+        "last": 5868
+      },
+      "loop_stack_free": {
+        "first": 4712,
+        "min": 4712,
+        "max": 4712,
+        "last": 4712
+      },
+      "mqtt_stack_free": {
+        "first": 9140,
+        "min": 9140,
+        "max": 9140,
+        "last": 9140
+      }
+    }
+  },
+  "not_verified": [
+    "speaker listening/quality",
+    "physical LCD inspection",
+    "long-duration streaming and audio dropouts",
+    "hardware FFT frame rate"
+  ]
+}

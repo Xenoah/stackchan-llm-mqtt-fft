@@ -66,6 +66,14 @@ USB制御テストでは、インストール済みArduinoフレームワーク�
 [FFT](screenshots/usb-fft-dev/fft-bars.png) / [波形](screenshots/usb-fft-dev/fft-wave.png)
 
 これらの画像は合成音声を使ったPC上の描画結果です。実機写真・実機キャプチャーではありません。
-公開準備時点では実機でのUSB認識、実際のスピーカー音、長時間の連続再生、
-Wi-Fi/MQTT同時動作時の音切れ・FPSは未検証です。公開後の実機確認はリリース説明へ記録します。
-`verification.json` は開発版をPC内で検証した時点の記録です。
+公開後のCoreS3実機確認（2026-10-17）:
+
+- 配布7ファイルのSHA256を照合後、COM4からアプリ領域だけを書き込み。書込みハッシュ照合に合格。
+- 起動版 `v2.6.0`、Wi-Fi再接続、MQTT online/synced、内蔵音声パックの再生を確認。
+- WindowsにAudioとCDC（COM8）が正常認識。48 kHz/16 bit/ステレオの5秒テスト音と30秒無音ストリームの送信が完了。
+- USBストリームを開いたまま内蔵音声の読み上げが完了。
+- 60秒間のCDC診断で再起動行・USB切断・例外検出はいずれも0。記録は [validation/v2.6.0.json](validation/v2.6.0.json)。
+- Arduino OTGのCDCログはDTR/RTSを両方有効にすると取得できます。従来の `monitor_serial.py` の既定（両方無効）ではログが出ません。
+
+音質の聴感評価・LCDの目視・長時間の音切れ・実機FFTのFPSは未確認です。
+`screenshots/usb-fft-dev/verification.json` は開発版をPC内で検証した時点の記録です。

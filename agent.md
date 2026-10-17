@@ -670,3 +670,12 @@ USBは仮想音声チャンネル1、発話は0。発話完了待ちをチャン
 `Xenoah/stackchan-llm-mqtt-fft` にv2.6.0を公開し、その後CoreS3へ更新する。
 設定・校正・音声パックを残すため、フラッシュ全消去・uploadfsは行わない。
 公開後の実機検証結果はリリース説明に記録する。
+
+公開・書込み完了。v2.6.0タグは `ace30a5`。配布7アセットのSHA256一致。
+実機のbootloader/partitions/boot_app0は配布版と一致したため、0x10000のアプリだけを書込み、ハッシュ照合成功。
+設定・校正・LittleFS音声パックは未書込み。システム先頭64KBのバックアップは `.pio/diagnostics/v2.6.0/before-system.bin`（非公開）。
+通常起動は303A:8001、COM8。Windows Audio認識、USB PCM送信、USB中の発話完了、Wi-Fi/MQTT復帰を確認。
+CDCログ取得にはDTR=RTS=Trueが必要。旧monitor_serial.pyのFalse設定ではログが出ないため、ローカル診断用コピーで60秒記録。
+例外・再起動行・切断0。公開用の検証記録は `docs/validation/v2.6.0.json`。実LCD・音質の目視/聴感評価は未確認。
+同時再生の最初のホスト検証は、30秒ストリームに対する待ち時間15秒が短くハーネスがタイムアウトした。
+USBの30秒再生自体は完了。待ち時間を直した15秒ストリームの再試験で、発話中→完了とUSBの継続・終了をassertして合格。
